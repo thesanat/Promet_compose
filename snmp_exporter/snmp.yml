@@ -1,0 +1,69 @@
+pexip_monitor:
+  walk:
+    - 1.3.6.1.4.1.2021.11
+    - 1.3.6.1.2.1.2.2.1
+    - 1.3.6.1.4.1.2021.4
+    - 1.3.6.1.4.1.2021.9
+
+  metrics:
+  #CPU
+    - name: CPU_percent_user
+      oid: 1.3.6.1.4.1.2021.11.9.0
+      type: gauge
+
+    - name: CPU_count
+      oid: 1.3.6.1.4.1.2021.11.67.0
+      type: gauge
+
+#Network
+    - name: Network_in_01
+      oid: 1.3.6.1.2.1.2.2.1.10.2
+      type: gauge
+
+    - name: Network_in_02
+      oid: 1.3.6.1.2.1.2.2.1.10.3
+      type: gauge
+
+    - name: Network_out_01
+      oid: 1.3.6.1.2.1.2.2.1.16.2
+      type: gauge
+
+    - name: Network_out_02
+      oid: 1.3.6.1.2.1.2.2.1.16.3
+      type: gauge
+#Memory
+    - name: RAM_of_Total
+      oid: 1.3.6.1.4.1.2021.4.5.0
+      type: gauge
+
+    - name: RAM_of_Used
+      oid: 1.3.6.1.4.1.2021.4.6.0
+      type: gauge
+
+    - name: RAM_of_Buffered
+      oid: 1.3.6.1.4.1.2021.4.14.0
+      type: gauge
+
+    - name: RAM_of_Cached
+      oid: 1.3.6.1.4.1.2021.4.15.0
+      type: gauge
+#Disk
+    - name: Disk_total
+      oid: 1.3.6.1.4.1.2021.9.1.6.1
+      type: gauge
+
+    - name: Disk_available
+      oid: 1.3.6.1.4.1.2021.9.1.7.1
+      type: gauge
+
+    - name: Disk_Used
+      oid: 1.3.6.1.4.1.2021.9.1.8.1
+      type: gauge
+
+    - name: Disk_percent_use
+      oid: 1.3.6.1.4.1.2021.9.1.9.1
+      type: gauge
+#Other
+    - name: Uptime
+      oid: 1.3.6.1.2.1.1.3.0
+      type: gauge

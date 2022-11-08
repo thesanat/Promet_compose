@@ -1,0 +1,128 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+           - alertmanagers:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  # - job_name: "host"
+
+  #   # metrics_path defaults to '/metrics'
+  #   # scheme defaults to 'http'.
+
+  #   static_configs:
+  #     - targets: ["localhost:9100"]
+  
+#------SNMP_Export-------#
+  - job_name: 'mgnt_pexip'
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    static_configs:
+      - targets:
+        - 192.168.97.9
+    metrics_path: /snmp
+    params:
+      module: [pexip_monitor]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116
+
+  - job_name: 'node_conf'
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    static_configs:
+      - targets:
+        - 192.168.97.51
+        - 192.168.97.52
+        - 192.168.97.53
+        - 192.168.97.54
+        - 192.168.97.55
+        - 192.168.97.56
+        - 192.168.97.57
+        - 192.168.97.58
+        - 192.168.97.59
+        - 192.168.97.60
+        - 192.168.97.61
+        - 192.168.97.62
+    metrics_path: /snmp
+    params:
+      module: [pexip_monitor]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116
+
+  - job_name: 'edge_conf'
+    scrape_interval: 1m
+    scrape_timeout: 1m
+    static_configs:
+      - targets:
+        - 192.168.97.11
+        - 192.168.97.12
+        - 192.168.97.13
+        - 192.168.97.14
+        - 192.168.97.15
+        - 192.168.97.16
+    metrics_path: /snmp
+    params:
+      module: [pexip_monitor]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116
+
+#------Node_Export-------#     
+  - job_name: "wowza"
+    static_configs:
+      - targets: ["192.168.97.221:9100"]
+      - targets: ["192.168.97.222:9100"]
+      - targets: ["192.168.97.223:9100"]
+
+#------Blackbox_Export-------#
+  # - job_name: 'blackbox'
+  #   metrics_path: /probe
+  #   params:
+  #     module: [http_2xx] 
+  #   static_configs:
+  #     - targets:
+  #       - https://meetingroom.one.th
+  #       - https://meet2.one.th   
+  #   relabel_configs:
+  #     - source_labels: [__address__]
+  #       target_label: __param_target
+  #     - source_labels: [__param_target]
+  #       target_label: instance
+  #     - target_label: __address__
+  #       replacement: 10.100.99.227:9115  
+
+#------Statping_Export-------#
+  # - job_name: 'statping'
+  #   scrape_interval: 30s
+  #   bearer_token: 'token_statping'
+  #   static_configs:
+  #     - targets: ['statping:8080']
