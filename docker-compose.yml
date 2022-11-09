@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
     prometheus_data: {}
+    statping_data: {}
 
 networks:
   back-tier:
@@ -9,6 +10,7 @@ networks:
 services:
 
   prometheus:
+    container_name: prometheus
     image: prom/prometheus:v2.36.2
     volumes:
       - ./prometheus/:/etc/prometheus/
@@ -29,6 +31,7 @@ services:
 
   snmp-exporter:
     image: prom/snmp-exporter:latest
+    container_name: snmp_exporter
     volumes:
       - ./snmp_exporter/:/etc/snmp_exporter/
     command:
@@ -43,6 +46,7 @@ services:
 
   blackbox-exporter:
     image: prom/blackbox-exporter:latest
+    container_name: blackbox_exporter
     volumes:
       - ./blackbox_exporter/:/etc/blackbox_exporter/
     command:
@@ -68,3 +72,35 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
     
+  statping:
+    image: statping/statping
+    container_name: statping
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - statping_data:/app
+# links:
+#   - postgres
+    environment:
+      DB_CONN: sqlite
+#     DB_CONN: postgres
+#     DB_HOST: postgres
+#     DB_PORT: 5432
+#     DB_DATABASE: statping
+#     DB_USER: root
+#     DB_PASS: password123
+
+# postgres:
+#   container_name: postgres
+#   image: postgres:10.0-alpine
+#   ports:
+#     - 5432:5432
+#   volumes:
+#     - pg_data:/var/lib/postgresql/data/pg_data
+#   environment:
+#     POSTGRES_PASSWORD: password123
+#     POSTGRES_DB: statping
+#     POSTGRES_USER: root
+#     POSTGRES_PORT: 5432
+#     PGDATA: /var/lib/postgresql/data/pg_data
