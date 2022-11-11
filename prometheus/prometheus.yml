@@ -16,50 +16,48 @@ rule_files:
   # - "second_rules.yml"
 
 scrape_configs:
-#----------SNMP_Export---------#
-# - job_name: 'SNMP'
-#   scrape_interval: 30s
-#   scrape_timeout: 1m
-#   static_configs:
-#     - targets:
-#       - ip_target #127.0.0.1
-#   metrics_path: /snmp
-#   params:
-#     module: [pexip_monitor]
-#   relabel_configs:
-#     - source_labels: [__address__]
-#       target_label: __param_target
-#     - source_labels: [__param_target]
-#       target_label: instance
-#     - target_label: __address__
-#       replacement: 127.0.0.1:9116
+# ----------SNMP_Export---------#
+  - job_name: 'SNMP'
+    scrape_interval: 30s
+    scrape_timeout: 1m
+    static_configs:
+      - targets:
+        - ip_target #127.0.0.1
+    metrics_path: /snmp
+    params:
+      module: [monitor]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9116
 
 #------Node_Export-------#     
   - job_name: "Node_Export"
     static_configs:
       - targets: ["ip_target:9100"]
-      - targets: ["ip_target:9100"]
-      - targets: ["ip_target:9100"]
 
 #------Blackbox_Export-------#
-# - job_name: 'SSL_Domain'
-#   metrics_path: /probe
-#   params:
-#     module: [http_2xx] 
-#   static_configs:
-#     - targets:
-#       - https://google.com
-#   relabel_configs:
-#     - source_labels: [__address__]
-#       target_label: __param_target
-#     - source_labels: [__param_target]
-#       target_label: instance
-#     - target_label: __address__
-#       replacement: 127.0.0.1:9115  
+  - job_name: 'SSL_Domain'
+    metrics_path: /probe
+    params:
+      module: [http_2xx] 
+    static_configs:
+      - targets:
+        - https://exsample.com 
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9115  
 
 #------Statping_Export-------#
-# - job_name: 'Statping'
-#   scrape_interval: 30s
-#   bearer_token: 'token_statping'
-#   static_configs:
-#     - targets: ['127.0.0.1:8080']
+  - job_name: 'Statping'
+    scrape_interval: 30s
+    bearer_token: 'token_statping'
+    static_configs:
+      - targets: ['127.0.0.1:8080']
